@@ -157,10 +157,34 @@ async function logoutUserController(req, res) {
     res.status(200).json({
       message: "User logged out successfully",
     });
-
   } catch (error) {
     console.error("Logout error:", error);
 
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+/**
+ * @name getMeController
+ * @description get the current logged in user details
+ * @access Private
+ */
+async function getMeController(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const user = await userModel.findById(userId);
+
+    res.status(200).json({
+      message: "User details fetched successfully",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Get me error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -169,4 +193,5 @@ module.exports = {
   registerUserController,
   loginUserController,
   logoutUserController,
+  getMeController,
 };
