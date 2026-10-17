@@ -2,6 +2,8 @@ const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const tokenBlackListModel = require("../models/blacklist.model");
+
 /**
  * @name registerUserController
  * @description register a new user, expects username, email and passowrd in the request body
@@ -129,4 +131,42 @@ async function loginUserController(req, res) {
   }
 }
 
-module.exports = { registerUserController, loginUserController };
+/**
+ * @name logoutUserController
+ * @description logout a user, expects token in the request cookies
+ * @access Public
+ */
+async function logoutUserController(req, res) {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Token is not provided",
+      });
+    }
+
+    await tokenBlackListModel.create({ token });
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    res.status(200).json({
+      message: "User logged out successfully",
+    });
+
+  } catch (error) {
+    console.error("Logout error:", error);
+
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+module.exports = {
+  registerUserController,
+  loginUserController,
+  logoutUserController,
+};
