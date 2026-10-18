@@ -5,13 +5,15 @@ import "../auth.form.scss";
 const Register = () => {
   const navigate = useNavigate();
 
+  navigate();
+
   const handleSubmit = (e) => {
     e.preverntDefault();
   };
   return (
     <main>
       <div className="form-container">
-        <h1>Login</h1>
+        <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="username">Username :</label>
