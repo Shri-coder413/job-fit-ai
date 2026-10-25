@@ -7,10 +7,10 @@ const ai = new GoogleGenAI({
 });
 
 const interviewReportSchema = z.object({
-  matchScore: z
+  matchScore: z.number().min(0).max(100)
     .number()
     .describe(
-      "A score between 0 and 100 indicating how well the candidate's profile matches the job describe",
+      "A score between 0 and 100 indicating how well the candidate's profile matches the job description",
     ),
   technicalQuestions: z
     .array(
