@@ -116,9 +116,13 @@ $severity-low: #3fb950;
   flex: 1;
   padding: 1.75rem 2rem;
   overflow-y: auto;
+  min-height: initial;
+  max-height: calc(100vh - 3rem);
+  padding-bottom: 5rem;
+  align-items: flex-start;
 
   section {
-    height: 100%;
+    min-height: 100%;
   }
 }
 
@@ -388,9 +392,11 @@ $severity-low: #3fb950;
     &.score--high {
       border-color: $severity-low;
     }
+
     &.score--mid {
       border-color: $severity-medium;
     }
+
     &.score--low {
       border-color: $severity-high;
     }
