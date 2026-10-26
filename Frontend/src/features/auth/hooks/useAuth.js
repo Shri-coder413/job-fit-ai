@@ -48,7 +48,6 @@ export const useAuth = () => {
         setUser(data.user);
       } catch (err) {
         console.error("Failed to fetch user:", err);
-        setUser(null);
       } finally {
         setLoading(false);
       }
