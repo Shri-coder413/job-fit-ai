@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
@@ -15,7 +15,8 @@ export async function register({ username, email, password }) {
 
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.error("Registration failed:", err.response?.data || err.message);
+    throw err;
   }
 }
 
@@ -28,24 +29,32 @@ export async function login({ email, password }) {
 
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.error("Login failed:", err.response?.data || err.message);
+    throw err;
   }
 }
 
 export async function logout() {
   try {
     const response = await api.get("/api/auth/logout");
-
     return response.data;
-  } catch (err) {}
+  } catch (err) {
+    console.error("Logout failed:", err.response?.data || err.message);
+    throw err;
+  }
 }
 
 export async function getMe() {
   try {
     const response = await api.get("/api/auth/get-me");
-
     return response.data;
   } catch (err) {
-    console.log(err);
+    if (err.response?.status === 401) {
+      // The user is not logged in or their session has expired.
+      return null;
+    }
+
+    console.error("Failed to fetch user:", err.response?.data || err.message);
+    throw err;
   }
 }

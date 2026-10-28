@@ -148,19 +148,19 @@ Interview report generation accepts multipart form data, including `jobDescripti
 ## Trade-offs and current limitations
 
 - **AI quality versus predictability:** Gemini makes it practical to generate tailored reports without maintaining a large question bank. However, output quality can vary, may contain inaccuracies, and depends on an external API, its availability, and its limits.
--
+
 - **Privacy versus personalization:** The backend stores extracted resume text, self-description, and job description with reports. Resume and job information is also sent to Google Gemini for analysis. Avoid submitting information you do not want processed this way, and review relevant provider terms and retention settings.
--
+
 - **PDF support versus broader file support:** The upload middleware keeps files in memory and limits them to 3 MB. The backend uses PDF text extraction; DOCX is not supported by this pipeline. The frontend currently advertises PDF or DOCX and a 5 MB limit, so its upload guidance does not match backend behavior.
--
+
 - **Resume-less input is not currently reliable:** The interface says a self-description can be used without a resume, but the report controller unconditionally parses an uploaded file. In the current implementation, provide a PDF resume to avoid this mismatch.
--
+
 - **Simple local development configuration:** The frontend API URL and backend CORS origin are hard-coded for local development. A production deployment needs suitable origin and API configuration, plus secure hosting and secret management.
--
+
 - **PDF generation adds runtime cost:** Puppeteer renders the generated resume HTML into a PDF. This offers flexible formatting but uses more memory and runtime resources than a lightweight static document template.
--
+
 - **Cookie-based sessions need deployment care:** The app uses an HTTP-only cookie and a JWT with a one-day expiry. The backend also maintains a token blacklist. Production deployments should review cookie, CORS, and CSRF protections for their specific hosting setup.
--
+
 - **Test coverage is limited:** The backend `test` script is currently a placeholder, so it does not run an automated test suite.
 
 ## Development checks
