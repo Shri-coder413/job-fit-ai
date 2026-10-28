@@ -21,4 +21,12 @@ const interviewRouter = require("./routes/interview.routes");
 app.use("/api/auth", authRouter);
 app.use("/api/interview", interviewRouter);
 
+// Health check route
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Job Fit AI backend is running successfully!"
+  });
+});
+
 module.exports = app;
